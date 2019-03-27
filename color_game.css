@@ -1,0 +1,97 @@
+/*
+COLORS:
+background = rgb(34, 34, 34);
+text = rgb(221, 221, 221);
+
+*/
+
+body
+{
+   margin: 0;
+
+   background-color: rgb(34, 34, 34);
+
+   font-family: Comfortaa;
+}
+
+h1
+{
+   text-align: center;
+   padding: 15px 0 15px 0;
+   margin: 0;
+   /*Starting colors*/
+   font-size: 2.5rem;
+   color: white;
+   background-color: rgb(64, 155, 217);
+}
+
+.stripe
+{
+   min-height: 30px; /*else it's auto*/
+   margin-bottom: 15px;
+
+   background: rgb(221, 221, 221);
+
+   text-align: center;
+   font-size: 0.9rem;
+}
+
+button
+{
+   height: 30px;
+   border: none;
+   /* background: none; <-- is this doing anything?*/
+
+   font-size: 0.9rem;
+   font-weight: bold;
+   letter-spacing: 1px;
+   color: rgb(34, 34, 34);
+
+   outline: none;
+   transition: all 0.3s;
+   --webkit-transition: all 0.3s; /* for safary and others */
+   --moz-transition: all 0.3s; /* for firefox */
+}
+
+button:hover
+{
+   background-color: rgb(34, 34, 34);
+   color: rgb(221, 221, 221);
+}
+
+a
+{
+   background-color: inherit; /*otherwise it changes independently and it looks weird*/
+   color: inherit;
+
+   text-decoration: none;  /*and this is for the link undelining Chrome does*/
+}
+
+#info
+{
+   display: inline-block;
+   width: 30%;
+}
+
+.grid
+{
+   max-width: 600px; /* min for large devices in bootstrap 4*/
+   margin: 0 auto 0 auto; /* centering */
+}
+
+.square
+{
+   /* size */
+   width: 30%;
+   padding-bottom: 30%;
+   margin: 1.5%;
+   border: 1px solid rgb(221, 221, 221);
+   border-radius: 15%;
+
+   /* position */
+   float: left;
+   background-color: rgb(221, 221, 221);
+
+   /* transition */
+   transition: background 0.6s;
+}

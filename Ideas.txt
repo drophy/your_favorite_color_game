@@ -1,0 +1,7 @@
+Ideas:
+> Make it adapt better to different screen sizes
+> Consider adding complementary color in first 3 stages
+> Consider showing a somewhat transparent text with the hex/rgb color when a square is hovered over
+> Register the users previous choices and display them somewhere?
+> Consider allowing the user to change the h1's text and color (so they can see how their color works
+> Consider adding a light mode (rn it's in "night mode" I guess)
