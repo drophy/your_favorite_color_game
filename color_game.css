@@ -95,3 +95,18 @@ a
    /* transition */
    transition: background 0.6s;
 }
+
+#credits {
+   width: 100%;
+   
+   color: rgb(221, 221, 221);
+
+   display: inline-flex;
+   justify-content: flex-end;
+}
+
+#credits p {
+   margin: 0;
+   padding-right: 10px;
+   padding-top: 5px;
+}
