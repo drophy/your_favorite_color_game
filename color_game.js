@@ -32,8 +32,9 @@ for(var i = 0; i < arrSquares.length; i++)
       console.log(chosenColor + " was chosen");
       // Update banner thingy
       info.textContent = "Your favourite colour might be " + chosenColor;
-      header.style.backgroundColor = chosenColor;
-      header.style.color = contrastingColor(chosenColor);
+      info.innerHTML = `Your favourite colour might be <span>${chosenColor}<span>`;
+      info.querySelector('span').style.backgroundColor = header.style.backgroundColor = chosenColor;
+      info.querySelector('span').style.color =header.style.color = contrastingColor(chosenColor);
       // Update Done! button
       link.setAttribute("href", "https://www.colorhexa.com/" + rgbToHex(chosenColor));
       // Generate new colors and update them
@@ -46,10 +47,11 @@ reset.addEventListener("click", function(){
    stage = 1;
    alterOffset = 128;
 
-   header.style.backgroundColor = "rgb(64, 155, 217)";
+   header.style.backgroundColor = "rgb(49, 183, 189)";
    header.style.color = "white";
    info.textContent = "";
 
+   arrSquares.forEach(square => square.style.display = 'initial'); // unhides any previously hiden squares
    fillRandom(9);
 });
 
@@ -110,39 +112,51 @@ function overwritteAtRandom(txColor)
 function fillAlters(chosenColor)
 {
    // Original color stays in the middle
-   arrSquares[4].style.backgroundColor = chosenColor;
+   arrColors[4] = chosenColor;
 
-   var iComa = chosenColor.indexOf(",");
-   var r = Number(chosenColor.slice(4, iComa));
+   // Alter colors are calculated
+   let [r, g, b] = chosenColor.slice(4, chosenColor.length-1).split(',').map(n => Number(n)); // slice removes 'rgb(' and ')'
 
-   chosenColor = chosenColor.slice(iComa+2, chosenColor.length-1); // first ", " and ")" are lost
-
-   iComa = chosenColor.indexOf(",");
-   var g = Number(chosenColor.slice(0, iComa));
-   var b = Number(chosenColor.slice(iComa+2, chosenColor.length));
-
-   var alterValueR; // Squares 0 an 2 change R value
-   var alterValueG; // Squares 3 an 5 change G value
-   var alterValueB; // Squares 6 an 8 change B value
-   // Squares 1 an 7 are darker and lighter respectively
+   var alterValueR; // squares 0 an 2 change R value
+   var alterValueG; // squares 3 an 5 change G value
+   var alterValueB; // squares 6 an 8 change B value
+   // squares 1 an 7 are darker and lighter respectively
 
    r - alterOffset < 0? alterValueR = 0: alterValueR = r - alterOffset;
-   arrSquares[0].style.backgroundColor = "rgb(" + alterValueR + ", " + g + ", " + b + ")";
    g - alterOffset < 0? alterValueG = 0: alterValueG = g - alterOffset;
-   arrSquares[3].style.backgroundColor = "rgb(" + r + ", " + alterValueG + ", " + b + ")";
    b - alterOffset < 0? alterValueB = 0: alterValueB = b - alterOffset;
-   arrSquares[6].style.backgroundColor = "rgb(" + r + ", " + g + ", " + alterValueB + ")";
 
-   arrSquares[1].style.backgroundColor = "rgb(" + alterValueR + ", " + alterValueG + ", " + alterValueB + ")";
+   arrColors[0] = "rgb(" + alterValueR + ", " + g + ", " + b + ")";
+   arrColors[3] = "rgb(" + r + ", " + alterValueG + ", " + b + ")";
+   arrColors[6] = "rgb(" + r + ", " + g + ", " + alterValueB + ")";
+   arrColors[1] = "rgb(" + alterValueR + ", " + alterValueG + ", " + alterValueB + ")";
 
    r + alterOffset > 255? alterValueR = 255: alterValueR = r + alterOffset;
-   arrSquares[2].style.backgroundColor = "rgb(" + alterValueR + ", " + g + ", " + b + ")";
    g + alterOffset > 255? alterValueG = 255: alterValueG = g + alterOffset;
-   arrSquares[5].style.backgroundColor = "rgb(" + r + ", " + alterValueG + ", " + b + ")";
    b + alterOffset > 255? alterValueB = 255: alterValueB = b + alterOffset;
-   arrSquares[8].style.backgroundColor = "rgb(" + r + ", " + g + ", " + alterValueB + ")";
 
-   arrSquares[7].style.backgroundColor = "rgb(" + alterValueR + ", " + alterValueG + ", " + alterValueB + ")";
+   arrColors[2] = "rgb(" + alterValueR + ", " + g + ", " + b + ")";
+   arrColors[5] = "rgb(" + r + ", " + alterValueG + ", " + b + ")";
+   arrColors[8] = "rgb(" + r + ", " + g + ", " + alterValueB + ")";
+   arrColors[7] = "rgb(" + alterValueR + ", " + alterValueG + ", " + alterValueB + ")";
+
+   // We check if there are any repeated colors
+   let setColors = new Set();
+   arrColors = arrColors.map(color => {
+      if(setColors.has(color)) return null; // if one is found, it's replaced for 'null'
+      else {
+         setColors.add(color);
+         return color;
+      }
+   });
+
+   // Squares are filled unless we saw they had a repeated color
+   arrSquares.forEach(square => square.style.display = 'initial'); // unhides any previously hiden squares
+
+   for(let i = 0; i < arrSquares.length; i++) {
+      if(arrColors[i] === null) arrSquares[i].style.display = 'none'; // to have an element take up the space that it would normally take, but without actually rendering anything, use the visibility property instead.
+      else arrSquares[i].style.backgroundColor = arrColors[i];
+   }
 }
 
 function nextStage(chosenColor)
@@ -162,7 +176,9 @@ function nextStage(chosenColor)
       if(alterOffset === 2)
       {
          alert ("From now on, colours will just change 1 unit. The difference is virtually none. Click on \"New colours\" to start over or in \"Done!\" to learn more about the last color you chose and explore more similar and complementary colours.");
-         info.textContent = "Your favourite color is " + chosenColor;
+         info.innerHTML = `Your favourite colour is <span>${chosenColor}<span>`;
+         info.querySelector('span').style.backgroundColor = header.style.backgroundColor = chosenColor;
+         info.querySelector('span').style.color =header.style.color = contrastingColor(chosenColor);
       }
 
       fillAlters(chosenColor);
